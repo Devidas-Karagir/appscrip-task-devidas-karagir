@@ -1,25 +1,37 @@
+const products = [
+  {
+    id: 1,
+    name: "Running Shoe",
+    price: 120,
+    image: "/shoe.jpg",
+    category: "Footwear",
+  },
+  {
+    id: 2,
+    name: "Leather Bag",
+    price: 250,
+    image: "/bag.jpg",
+    category: "Accessories",
+  },
+  {
+    id: 3,
+    name: "Classic Watch",
+    price: 180,
+    image: "/watch.jpg",
+    category: "Accessories",
+  },
+];
+
 export default function Home() {
   return (
     <div className="products">
-
-      <div className="card">
-        <img src="/shoe.jpg" alt="Running Shoe" />
-        <h3>Running Shoe</h3>
-        <p>$120</p>
-      </div>
-
-      <div className="card">
-        <img src="/bag.jpg" alt="Leather Bag" />
-        <h3>Leather Bag</h3>
-        <p>$250</p>
-      </div>
-
-      <div className="card">
-        <img src="/watch.jpg" alt="Classic Watch" />
-        <h3>Classic Watch</h3>
-        <p>$180</p>
-      </div>
-
+      {products.map((product) => (
+        <div className="card" key={product.id}>
+          <img src={product.image} alt={product.name} />
+          <h3>{product.name}</h3>
+          <p>${product.price}</p>
+        </div>
+      ))}
     </div>
   );
 }
