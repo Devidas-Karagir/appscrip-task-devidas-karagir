@@ -27,36 +27,71 @@ const allProducts = [
 
 export default function Home() {
   const [products, setProducts] = useState(allProducts);
+  const [search, setSearch] = useState("");
+  const [cart, setCart] = useState<number[]>([]);
 
   const filterProducts = (category: string) => {
     if (category === "All") {
       setProducts(allProducts);
     } else {
-      const filtered = allProducts.filter(
-        (p) => p.category === category
-      );
-      setProducts(filtered);
+      setProducts(allProducts.filter(p => p.category === category));
     }
+  };
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    const filtered = allProducts.filter(p =>
+      p.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setProducts(filtered);
+  };
+
+  const sortLowToHigh = () => {
+    const sorted = [...products].sort((a, b) => a.price - b.price);
+    setProducts(sorted);
+  };
+
+  const sortHighToLow = () => {
+    const sorted = [...products].sort((a, b) => b.price - a.price);
+    setProducts(sorted);
+  };
+
+  const addToCart = (id: number) => {
+    setCart([...cart, id]);
   };
 
   return (
     <div>
-      <h1>Products</h1>
+      <div className="topbar">
+        <h1>Products</h1>
+        <div className="cart">🛒 {cart.length}</div>
+      </div>
+
+      <input
+        className="search"
+        type="text"
+        placeholder="Search products..."
+        value={search}
+        onChange={(e) => handleSearch(e.target.value)}
+      />
 
       <div className="filters">
         <button onClick={() => filterProducts("All")}>All</button>
         <button onClick={() => filterProducts("Footwear")}>Footwear</button>
-        <button onClick={() => filterProducts("Accessories")}>
-          Accessories
-        </button>
+        <button onClick={() => filterProducts("Accessories")}>Accessories</button>
+        <button onClick={sortLowToHigh}>Price ↑</button>
+        <button onClick={sortHighToLow}>Price ↓</button>
       </div>
 
       <div className="products">
-        {products.map((product) => (
+        {products.map(product => (
           <div className="card" key={product.id}>
             <img src={product.image} alt={product.name} />
             <h3>{product.name}</h3>
             <p>${product.price}</p>
+            <button onClick={() => addToCart(product.id)}>
+              Add To Cart
+            </button>
           </div>
         ))}
       </div>
