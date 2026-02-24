@@ -1,22 +1,57 @@
 "use client";
-import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+const productsData = [
+  { id: 1, name: "Running Shoe", price: 120, image: "/shoe.jpg" },
+  { id: 2, name: "Leather Bag", price: 250, image: "/bag.jpg" },
+  { id: 3, name: "Classic Watch", price: 180, image: "/watch.jpg" },
+];
 
 export default function Home() {
-  const [cartCount, setCartCount] = useState(0);
+  const [cart, setCart] = useState<any[]>([]);
+
+  // Load cart from localStorage
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  // Save cart to localStorage
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const addToCart = (product: any) => {
+    setCart([...cart, product]);
+  };
+
+  const removeFromCart = (id: number) => {
+    setCart(cart.filter(item => item.id !== id));
+  };
 
   return (
-    <div className="container">
+    <div>
       <h1>My Store</h1>
-      <h2>Cart Items: {cartCount}</h2>
+      <h2>Cart Items: {cart.length}</h2>
 
-      <button onClick={() => setCartCount(cartCount + 1)}>
-        Add Item
-      </button>
+      <div className="products">
+        {productsData.map(product => (
+          <div key={product.id} className="card">
+            <img src={product.image} />
+            <h3>{product.name}</h3>
+            <p>${product.price}</p>
 
-      <div className="links">
-        <Link href="/products">Go to Products</Link>
-        <Link href="/cart">Go to Cart</Link>
+            <button onClick={() => addToCart(product)}>
+              Add to Cart
+            </button>
+
+            <button onClick={() => removeFromCart(product.id)}>
+              Remove
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
