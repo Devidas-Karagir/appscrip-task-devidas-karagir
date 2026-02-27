@@ -12,11 +12,3 @@ export default function Cart() {
   );
 }
 
-export default function CartPage() {
-  return (
-    <div>
-      <h1>Your Cart</h1>
-      <p>Cart items will appear here</p>
-    </div>
-  );
-}
