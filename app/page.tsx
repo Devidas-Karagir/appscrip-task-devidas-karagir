@@ -8,20 +8,19 @@ const productsData = [
 ];
 
 export default function Home() {
+
   const [cart, setCart] = useState<any[]>([]);
 
-  // #Load cart from localStorage
-  useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
-  }, []);
+useEffect(() => {
+  const savedCart = localStorage.getItem("cart");
+  if (savedCart) {
+    setCart(JSON.parse(savedCart));
+  }
+}, []);
 
-  // #Save cart to localStorage
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+useEffect(() => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}, [cart]);
 
   const addToCart = (product: any) => {
     setCart([...cart, product]);
