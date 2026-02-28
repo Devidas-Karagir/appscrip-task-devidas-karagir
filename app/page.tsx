@@ -30,7 +30,6 @@ useEffect(() => {
     setCart(cart.filter(item => item.id !== id));
   };
 
-  // return
   return (
     <div>
       <h1>My Store</h1>
